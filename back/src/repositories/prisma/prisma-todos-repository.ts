@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 import { TodosRepository } from "../todos-repository";
 
 export class PrismaTodosRepository implements TodosRepository {
-    async findAllByUser(userId: string) {
+    async findAllByUser({userId}: {userId: string}) {
         const todo = await prisma.todo.findMany({
             where: {
                 userId
@@ -14,7 +14,7 @@ export class PrismaTodosRepository implements TodosRepository {
         return todo;
     }
 
-    async findById(id: string, userId: string) {
+    async findById({id, userId} : {id: string, userId: string}) {
         const todo = await prisma.todo.findUnique({
             where: {
                 id,
@@ -31,5 +31,26 @@ export class PrismaTodosRepository implements TodosRepository {
         });
 
         return todo;
+    }
+
+    async update({userId, data} : {userId: string, data: Prisma.TodoUncheckedUpdateInput}) {
+        const todo = await prisma.todo.update({
+            where: {
+                id: data.id as string,
+                userId,
+            },
+            data,
+        });
+
+        return todo;
+    }
+
+    async remove({id, userId} : {id: string, userId: string}) {
+        await prisma.todo.delete({
+            where: {
+                id,
+                userId,
+            }
+        });
     }
 }

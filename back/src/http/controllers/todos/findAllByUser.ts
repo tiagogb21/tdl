@@ -1,24 +1,21 @@
 import { z } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
-import { makeGetTodoProfileUseCase } from "@/use-cases/factories/make-get-todo-profile-use.case";
+import { makeFindAllTodoUseCase } from "@/use-cases/factories/make-find-all-todo-use-case";
 
 export async function findAllByUser(request: FastifyRequest, reply: FastifyReply) {
-    const findAllByUserBodySchema = z.object({
-        userId: z.string(),
+    const findUserByUserQuerySchema = z.object({
+        sub: z.string(),
     });
 
-    const { userId } = findAllByUserBodySchema.parse(request.query);
+    const { sub: userId } = findUserByUserQuerySchema.parse(request.user.sign);
 
-    const getTodoProfile = makeGetTodoProfileUseCase();
+    const makeFindAllTodo = makeFindAllTodoUseCase();
 
-    const { todo } = await getTodoProfile.execute({
+    const { todos } = await makeFindAllTodo.execute({
         userId,
     });
 
     return reply.status(200).send({
-        todo: {
-            ...todo,
-            password_hash: undefined,
-        },
+        todos
     });
 }

@@ -1,21 +1,22 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { z } from "zod";
-import { makeTodoUseCase } from "@/use-cases/factories/make-todo-use-case";
+import { makeCreateTodoUseCase } from "@/use-cases/factories/make-create-todo-use-case";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
-    const createtodoParamsSchema = z.object({
-        userId: z.string().uuid(),
+    const findUserByUserQuerySchema = z.object({
+        sub: z.string(),
     });
+
+    const { sub: userId } = findUserByUserQuerySchema.parse(request.user.sign);
 
     const createtodoBodySchema = z.object({
         content: z.string(),
         is_complete: z.boolean(),
     });
 
-    const { userId } = createtodoParamsSchema.parse(request.params);
     const {content, is_complete} = createtodoBodySchema.parse(request.body);
 
-    const todoUseCase = makeTodoUseCase();
+    const todoUseCase = makeCreateTodoUseCase();
 
     await todoUseCase.execute({
         userId,
