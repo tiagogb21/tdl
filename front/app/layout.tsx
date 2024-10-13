@@ -27,9 +27,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang={process.env.NEXT_PUBLIC_PROJECT_LANGUAGE ?? 'en'}>
-            <AuthProvider>
-                <StoreProvider>
+        <html lang="en">
+            <StoreProvider>
+                <AuthProvider>
                     <body
                         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
                     >
@@ -38,8 +38,8 @@ export default function RootLayout({
                             {children}
                         </div>
                     </body>
-                </StoreProvider>
-            </AuthProvider>
+                </AuthProvider>
+            </StoreProvider>
         </html>
     );
 }

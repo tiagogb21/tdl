@@ -2,9 +2,9 @@
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { FormInput } from "@/app/components/common/FormInput";
 import { registerSchema } from "@/app/schemas/registerSchema";
+import axios from "axios";
 
 interface FormData {
     name: string;
@@ -21,7 +21,9 @@ export default function Register() {
         resolver: yupResolver(registerSchema),
     });
 
-    const onSubmit = (data: FormData) => console.log(data);
+    const onSubmit = async (data: FormData) => {
+        const result = await axios.post(process.env.NEXT_PUBLIC_API_URL + '/users', data);
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 pt-4">
