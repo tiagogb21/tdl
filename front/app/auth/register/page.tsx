@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FormInput } from "@/app/components/FormInput";
+import { FormInput } from "@/app/components/common/FormInput";
 
 const schema = yup.object({
     name: yup.string().required("Nome é um campo obrigatório"),
@@ -39,6 +39,7 @@ export default function Register() {
             />
             <FormInput<FormData>
                 id="email"
+                type="email"
                 label="Email"
                 name="email"
                 errors={errors}
@@ -46,13 +47,14 @@ export default function Register() {
             />
             <FormInput<FormData>
                 id="password"
+                type="password"
                 label="Senha"
                 name="password"
                 errors={errors}
                 register={{...register('password')}}
             />
 
-            <button className="rounded-lg bg-project-blue-dark text-white py-2" type="submit">Entrar</button>
+            <button className="rounded-lg bg-project-blue-dark text-white py-2" type="submit">Cadastrar</button>
         </form>
     );
 }

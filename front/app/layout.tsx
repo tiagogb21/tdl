@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Header } from "./components/Header";
 import StoreProvider from "./providers/StoreProvider";
+import AuthProvider from "./providers/AuthProvider";
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
@@ -26,17 +27,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang={`process.env.NEXT_PROJECT_LANGUAGE ?? 'en`}>
-            <StoreProvider>
-                <body
-                    className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-                >
-                    <Header />
-                    <div className="min-h-screen bg-project-gray-600">
-                        {children}
-                    </div>
-                </body>
-            </StoreProvider>
+        <html lang={process.env.NEXT_PUBLIC_PROJECT_LANGUAGE ?? 'en'}>
+            <AuthProvider>
+                <StoreProvider>
+                    <body
+                        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+                    >
+                        <Header />
+                        <div className="min-h-screen bg-project-gray-600">
+                            {children}
+                        </div>
+                    </body>
+                </StoreProvider>
+            </AuthProvider>
         </html>
     );
 }

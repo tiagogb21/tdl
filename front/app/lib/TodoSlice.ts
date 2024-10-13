@@ -1,45 +1,43 @@
 "use client";
 
-import { v4 as uuidv4 } from "uuid";
-import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface TodoState {
+export interface Todo {
     id: string;
     content: string;
-    is_complete: boolean;
+    isComplete: boolean;
 }
 
-const initialState: TodoState[] = [];
+const initialState: Todo[] = [];
 
-export const TodoSlice = createSlice({
-    name: "todo",
+const todoSlice = createSlice({
+    name: "todos",
     initialState,
     reducers: {
-        add: (state, action: PayloadAction<Omit<TodoState, 'id'>>) => {
+        addTodo: (state, action: PayloadAction<Todo>) => {
             state.push({
-                id: uuidv4(),
+                id: action.payload.id,
                 content: action.payload.content,
-                is_complete: action.payload.is_complete ?? false,
+                isComplete: action.payload.isComplete ?? false,
             });
         },
-        update: (state, action: PayloadAction<TodoState>) => {
-            const { id, content, is_complete } = action.payload;
-            const index = state.findIndex(todo => todo.id === id);
 
-            if (index !== -1) {
-                state[index].content = content ?? state[index].content;
-                state[index].is_complete = is_complete ?? state[index].is_complete;
+        updateTodo: (state, action: PayloadAction<Partial<Todo> & { id: string }>) => {
+            const { id, content, isComplete } = action.payload;
+            const todo = state.find(todo => todo.id === id);
+
+            if (todo) {
+                if (content !== undefined) todo.content = content;
+                if (isComplete !== undefined) todo.isComplete = isComplete;
             }
         },
-        remove: (state, action: PayloadAction<{id: string}>) => {
-            const todoTarget = state.findIndex((el) => el.id !== action.payload.id);
-            if(todoTarget !== -1) {
-                state.splice(todoTarget, 1)
-            }
+
+        removeTodo: (state, action: PayloadAction<string>) => {
+            return state.filter(todo => todo.id !== action.payload);
         },
     },
 });
 
-export const { add, update, remove } = TodoSlice.actions;
-export default TodoSlice.reducer;
+export const { addTodo, updateTodo, removeTodo } = todoSlice.actions;
+
+export default todoSlice.reducer;
