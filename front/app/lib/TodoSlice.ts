@@ -1,34 +1,29 @@
 "use client";
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ITodo } from "../types/interfaces/ITodo";
 
-export interface Todo {
-    id: string;
-    content: string;
-    isComplete: boolean;
-}
-
-const initialState: Todo[] = [];
+const initialState: ITodo[] = [];
 
 const todoSlice = createSlice({
     name: "todos",
     initialState,
     reducers: {
-        addTodo: (state, action: PayloadAction<Todo>) => {
+        addTodo: (state, action: PayloadAction<ITodo>) => {
             state.push({
                 id: action.payload.id,
                 content: action.payload.content,
-                isComplete: action.payload.isComplete ?? false,
+                is_complete: action.payload.is_complete ?? false,
             });
         },
 
-        updateTodo: (state, action: PayloadAction<Partial<Todo> & { id: string }>) => {
-            const { id, content, isComplete } = action.payload;
+        updateTodo: (state, action: PayloadAction<Partial<ITodo> & { id: string }>) => {
+            const { id, content, is_complete } = action.payload;
             const todo = state.find(todo => todo.id === id);
 
             if (todo) {
                 if (content !== undefined) todo.content = content;
-                if (isComplete !== undefined) todo.isComplete = isComplete;
+                if (is_complete !== undefined) todo.is_complete = is_complete;
             }
         },
 
