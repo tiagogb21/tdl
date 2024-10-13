@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { FormInput } from "@/app/components/common/FormInput";
-import { loginSchema } from "@/app/schemas/a";
+import { loginSchema } from "@/app/schemas/loginSchema";
 import { redirect } from "next/navigation";
 
 interface FormData {

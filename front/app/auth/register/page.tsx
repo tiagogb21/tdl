@@ -4,12 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FormInput } from "@/app/components/common/FormInput";
-
-const schema = yup.object({
-    name: yup.string().required("Nome é um campo obrigatório"),
-    email: yup.string().email().required("Email é um campo obrigatório"),
-    password: yup.string().min(8, "A senha deve ter pelo menos 8 caracteres").required("Senha é obrigatória"),
-}).required();
+import { registerSchema } from "@/app/schemas/registerSchema";
 
 interface FormData {
     name: string;
@@ -23,7 +18,7 @@ export default function Register() {
         handleSubmit,
         formState: { errors },
     } = useForm<FormData>({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(registerSchema),
     });
 
     const onSubmit = (data: FormData) => console.log(data);
